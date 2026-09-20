@@ -2,6 +2,8 @@
 
 MoodTrip is a mood-aware place recommendation system that combines live place discovery with machine-learning ranking, explainable recommendations, group mood handling, and user feedback learning.
 
+**Live application:** [mood-trip-chi.vercel.app](https://mood-trip-chi.vercel.app/)
+
 ## What it does
 
 - Converts a selected or written mood into a structured preference profile.
@@ -85,7 +87,7 @@ tests/               Playwright E2E tests
 
 ## Live demo
 
-The MoodTrip experience is also available from the portfolio deployment at `/moodtrip` until this standalone repository receives its own production deployment.
+The standalone production deployment is available at [mood-trip-chi.vercel.app](https://mood-trip-chi.vercel.app/). It is also linked directly from the [portfolio](https://divyansh-portfolio-pearl.vercel.app/).
 
 ---
 
