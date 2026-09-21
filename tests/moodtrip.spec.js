@@ -21,7 +21,10 @@ test.beforeEach(async({page})=>{
     const url=new URL(route.request().url());
     const action=url.searchParams.get('action');
     let body={};
-    if(action==='suggest')body={items:[]};
+    if(action==='suggest')body=url.searchParams.get('q')==='Old City'?{items:[{
+      id:'old-place',label:'Old Suggestion',fullLabel:'Old Suggestion, Somewhere',
+      secondary:'Somewhere',lat:20,lng:70,type:'place'
+    }]}:{items:[]};
     else if(action==='geocode')body={lat:26.85,lng:81.01,label:'Test City'};
     else if(action==='places')body={
       provider:'OpenStreetMap',
@@ -60,4 +63,15 @@ test('ML evaluation lab is present and transparent about benchmark scope',async(
   await expect(page.getByText('05 / ML EVALUATION LAB')).toBeVisible();
   await expect(page.getByText(/controlled preference simulation/i)).toBeVisible();
   await expect(page.getByText('Production Distilled NN')).toBeVisible();
+});
+
+test('manual search never reuses a stale location suggestion',async({page})=>{
+  await page.goto('/moodtrip');
+  const location=page.getByPlaceholder('Search building, society, street, locality or city');
+  await location.fill('Old City');
+  await expect(page.getByText('Old Suggestion',{exact:true})).toBeVisible();
+  await location.fill('Test City');
+  await page.getByRole('button',{name:'SEARCH',exact:true}).click();
+  await expect(page.getByText('Test City',{exact:true}).first()).toBeVisible();
+  await expect(page.getByRole('button',{name:'SEARCH',exact:true})).toBeVisible();
 });
