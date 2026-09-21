@@ -1056,10 +1056,6 @@ function App(){
   async function useCity(e){
     e?.preventDefault();
     if(!manualCity.trim())return;
-    if(locationSuggestions.length){
-      chooseSuggestion(locationSuggestions[0]);
-      return;
-    }
     try{
       setError('');setLocationState('loading');
       const found=await geocodeCity(manualCity.trim());
@@ -1474,7 +1470,12 @@ function App(){
               <input
                 value={manualCity}
                 onFocus={()=>setSuggestOpen(true)}
-                onChange={e=>{setManualCity(e.target.value);setSuggestOpen(true)}}
+                onChange={e=>{
+                  setManualCity(e.target.value);
+                  setLocationSuggestions([]);
+                  setSuggestState('idle');
+                  setSuggestOpen(true);
+                }}
                 placeholder="Search building, society, street, locality or city"
                 autoComplete="off"
               />
