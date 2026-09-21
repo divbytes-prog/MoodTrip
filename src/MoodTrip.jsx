@@ -934,7 +934,7 @@ function App(){
   useEffect(()=>{
     if(!suggestOpen||manualCity.trim().length<2){
       setLocationSuggestions([]);
-      if(manualCity.trim().length<2)setSuggestState('idle');
+      setSuggestState('idle');
       return;
     }
     let alive=true;
@@ -1048,6 +1048,7 @@ function App(){
     setAccuracy(null);
     setLocationState('ready');
     setSuggestOpen(false);
+    setSuggestState('idle');
     setLocationSuggestions([]);
     setError('');
   }
@@ -1067,8 +1068,10 @@ function App(){
       setAccuracy(null);
       setLocationState('ready');
       setSuggestOpen(false);
+      setSuggestState('idle');
     }catch(e){
       setLocationState('error');
+      setSuggestState('idle');
       setError(e.message||'Location not found. Try the full building/society name plus neighbourhood and city.');
     }
   }
