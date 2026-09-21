@@ -43,6 +43,7 @@ test('recommendations adapt immediately to Not For Me feedback',async({page})=>{
   await location.fill('Test City');
   await page.getByRole('button',{name:'SEARCH',exact:true}).click();
   await expect(page.getByText('Test City',{exact:true}).first()).toBeVisible();
+  await expect(page.getByRole('button',{name:'SEARCH',exact:true})).toBeVisible();
 
   await page.getByRole('button',{name:'FIND PLACES FOR THIS MOOD'}).click();
   await expect(page.getByText('Places that fit right now.')).toBeVisible();
