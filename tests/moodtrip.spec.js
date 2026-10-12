@@ -77,6 +77,7 @@ test('manual search never reuses a stale location suggestion',async({page})=>{
 });
 
 test('help chat answers feature questions and handles unknown queries',async({page})=>{
+  await page.route('**/api/help',route=>route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:'Unavailable'})}));
   await page.goto('/moodtrip');
   await page.getByRole('button',{name:'Open MoodTrip help'}).click();
   const dialog=page.getByRole('dialog',{name:'MoodTrip help chat'});
@@ -89,4 +90,14 @@ test('help chat answers feature questions and handles unknown queries',async({pa
   await expect(dialog.getByRole('link',{name:'Email the developer'})).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(dialog).toBeHidden();
+});
+
+test('help chat shows a free-form AI answer when available',async({page})=>{
+  await page.route('**/api/help',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({answer:'Group mode blends the selected moods.',source:'ai'})}));
+  await page.goto('/moodtrip');
+  await page.getByRole('button',{name:'Open MoodTrip help'}).click();
+  const dialog=page.getByRole('dialog',{name:'MoodTrip help chat'});
+  await dialog.getByRole('textbox',{name:'Ask MoodTrip a question'}).fill('Can my friends choose different moods?');
+  await dialog.getByRole('button',{name:'Send question'}).click();
+  await expect(dialog.getByText('Group mode blends the selected moods.')).toBeVisible();
 });
