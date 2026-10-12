@@ -10,6 +10,7 @@ import{
 }from'motion/react';
 import L from'leaflet';
 import AeroShards from'./AeroShards';
+import MoodTripHelp from'./MoodTripHelp';
 import{
   ML_BENCHMARK,
   ML_META,
@@ -1809,6 +1810,7 @@ function App(){
       </div>
     </section>
 
+    <MoodTripHelp/>
     <footer className="mtFooter">
       <div className="mtFooterInner">
         <a className="mtFooterBrand" href="/moodtrip" aria-label="MoodTrip home">
