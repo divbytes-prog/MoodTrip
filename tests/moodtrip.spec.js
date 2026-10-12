@@ -75,3 +75,18 @@ test('manual search never reuses a stale location suggestion',async({page})=>{
   await expect(page.getByText('Test City',{exact:true}).first()).toBeVisible();
   await expect(page.getByRole('button',{name:'SEARCH',exact:true})).toBeVisible();
 });
+
+test('help chat answers feature questions and handles unknown queries',async({page})=>{
+  await page.goto('/moodtrip');
+  await page.getByRole('button',{name:'Open MoodTrip help'}).click();
+  const dialog=page.getByRole('dialog',{name:'MoodTrip help chat'});
+  await expect(dialog).toBeVisible();
+  await dialog.getByRole('button',{name:'How do I use MoodTrip?'}).click();
+  await expect(dialog.getByText(/Choose Use My Location or search for a city/)).toBeVisible();
+  await dialog.getByRole('textbox',{name:'Ask MoodTrip a question'}).fill('What is the weather forecast tomorrow?');
+  await dialog.getByRole('button',{name:'Send question'}).click();
+  await expect(dialog.getByText(/I am not sure about that yet/)).toBeVisible();
+  await expect(dialog.getByRole('link',{name:'Email the developer'})).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeHidden();
+});
