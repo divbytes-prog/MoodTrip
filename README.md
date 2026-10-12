@@ -14,7 +14,11 @@ MoodTrip is a mood-aware place recommendation system that combines live place di
 - Supports group mood blending and explicit **Good Pick / Not For Me** feedback.
 - Includes an anonymous Supabase feedback pipeline for cross-user learning when configured.
 - Provides a transparent ML evaluation lab instead of presenting synthetic benchmarks as real-user performance.
-- Includes an in-app help chat for planner steps, location and map troubleshooting, mood detection, group mode, reviews, feedback, history and privacy. It uses curated answers locally without an API key; unknown questions lead to a contact option rather than a fabricated answer.
+- Includes an in-app help chat for planner steps, location and map troubleshooting, mood detection, group mode, reviews, feedback, history and privacy. The server-side AI endpoint answers free-form questions from documented product facts; curated local answers remain available during provider outages.
+
+### Help chat
+
+On Vercel, `/api/help` uses the deployment's `VERCEL_OIDC_TOKEN` to authenticate to AI Gateway. No model key belongs in browser code. Local server testing can use `AI_GATEWAY_API_KEY` as an environment variable. The help endpoint limits conversation length and output size and applies a per-instance request limit. It does not persist chat history. AI Gateway usage may draw from the Vercel team's credits; review its usage and budget settings before opening the site to substantial public traffic.
 
 ## ML architecture
 
